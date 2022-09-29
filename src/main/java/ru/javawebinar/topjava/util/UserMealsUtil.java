@@ -19,8 +19,11 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100),
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000),
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500),
-                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
-        );
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 11, 10, 0), "завтрак", 500),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 11, 16, 0), "обед", 1500),
+                new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 11, 20, 0), "ужин", 9000)
+                );
 
         List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
