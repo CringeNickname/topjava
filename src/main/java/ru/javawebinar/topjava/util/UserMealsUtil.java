@@ -8,9 +8,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
@@ -33,9 +31,12 @@ public class UserMealsUtil {
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
         List<UserMealWithExcess> returningList = new ArrayList<>();
+        Map<Integer, Boolean> daysWithExcessMap = new HashMap<>();
+        List<UserMeal> entryMeals = new ArrayList<>();
         int eatenCalories = 0;
         int dayOfYear = meals.get(0).getDateTime().getDayOfYear();
-        boolean excess = false;
+        meals.sort((o1, o2) -> o1.getDateTime().getDayOfYear() - o2.getDateTime().getDayOfYear());
+
         for (UserMeal userMeal : meals) {
             if (userMeal.getDateTime().getDayOfYear() != dayOfYear) {
                 dayOfYear = userMeal.getDateTime().getDayOfYear();
@@ -43,12 +44,19 @@ public class UserMealsUtil {
             }
             eatenCalories += userMeal.getCalories();
             if (eatenCalories > caloriesPerDay) {
-                excess = true;
+                daysWithExcessMap.put(dayOfYear, true);
             }
             if (userMeal.getDateTime().getHour() >= startTime.getHour() && userMeal.getDateTime().getHour() <= endTime.getHour()) {
-                returningList.add(new UserMealWithExcess(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), excess));
+                entryMeals.add(userMeal);
             }
         }
+
+        for (UserMeal userMeal : entryMeals) {
+            int dayOfYear1 = userMeal.getDateTime().getDayOfYear();
+            returningList.add(new UserMealWithExcess(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), daysWithExcessMap.getOrDefault(dayOfYear1, false)));
+
+        }
+
         return returningList;
     }
 
