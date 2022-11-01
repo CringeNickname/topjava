@@ -32,24 +32,4 @@ public class EditMealServlet extends HttpServlet {
 
         getServletContext().getRequestDispatcher("/editMeal.jsp").forward(req, resp);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("meal post");
-
-        List<Meal> meals = MealsUtil.getMeals();
-        String date = req.getParameter("date");
-        String description = req.getParameter("description");
-        String calories = req.getParameter("calories");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        LocalDateTime localDateTime = localDate.atStartOfDay();
-        int cal = Integer.parseInt(calories);
-        Meal meal = new Meal(localDateTime, description, cal);
-        meals.add(meal);
-        MealsUtil.setMeals(meals);
-
-        getServletContext().getRequestDispatcher("/meals.jsp").forward(req, resp);
-    }
 }

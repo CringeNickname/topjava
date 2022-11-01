@@ -35,30 +35,23 @@ public class MealServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        log.debug("meal post");
-//
-//        List<Meal> meals = MealsUtil.getMeals();
-//        int id;
-//        try {
-//            id = (int) req.getAttribute("id");
-//        }
-//        catch (NullPointerException e) {
-//            id = meals.size();
-//        }
-//        String date = req.getParameter("date");
-//        String description = req.getParameter("description");
-//        String calories = req.getParameter("calories");
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-//        LocalDate localDate = LocalDate.parse(date, formatter);
-//        LocalDateTime localDateTime = localDate.atStartOfDay();
-//        int cal = Integer.parseInt(calories);
-//        Meal meal = new Meal(localDateTime, description, cal);
-//        meals.add(meal);
-//        MealsUtil.setMeals(meals);
-//
-//        doGet(req, resp);
-//    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.debug("meal post");
+
+        List<Meal> meals = MealsUtil.getMeals();
+        String date = req.getParameter("date");
+        String description = req.getParameter("description");
+        String calories = req.getParameter("calories");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        LocalDateTime localDateTime = localDate.atStartOfDay();
+        int cal = Integer.parseInt(calories);
+        Meal meal = new Meal(localDateTime, description, cal);
+        meals.add(meal);
+        MealsUtil.setMeals(meals);
+
+        doGet(req, resp);
+    }
 }

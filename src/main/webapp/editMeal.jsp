@@ -7,7 +7,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Edit Meal</h2><br>
-<form method="post" action="editMeal">
+<form method="post" action="meals">
   <h4>DateTime:</h4><label>
     <input type="date" name="date">
   </label>
