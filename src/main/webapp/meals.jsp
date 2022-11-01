@@ -33,8 +33,8 @@
             <td><%= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(meal.getDateTime())%></td>
             <td><%= meal.getDescription()%></td>
             <td><%= meal.getCalories()%></td>
-            <td><a href="editMeal">Update</a></td>
-            <td><a href="">Delete</a></td>
+            <td><a href="editMeal?id=<%=meals.indexOf(meal)%>">Update</a></td>
+            <td><a href="?id=<%= meals.indexOf(meal)%>">Delete</a></td>
         </tr>
     <% } %>
 </table>

@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.util.MealsUtil.filteredByStreams;
@@ -31,11 +35,30 @@ public class MealServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Meal> meals = MealsUtil.getMeals();
-        List<MealTo> mealsTo = filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
-
-
-    }
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        log.debug("meal post");
+//
+//        List<Meal> meals = MealsUtil.getMeals();
+//        int id;
+//        try {
+//            id = (int) req.getAttribute("id");
+//        }
+//        catch (NullPointerException e) {
+//            id = meals.size();
+//        }
+//        String date = req.getParameter("date");
+//        String description = req.getParameter("description");
+//        String calories = req.getParameter("calories");
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
+//        LocalDate localDate = LocalDate.parse(date, formatter);
+//        LocalDateTime localDateTime = localDate.atStartOfDay();
+//        int cal = Integer.parseInt(calories);
+//        Meal meal = new Meal(localDateTime, description, cal);
+//        meals.add(meal);
+//        MealsUtil.setMeals(meals);
+//
+//        doGet(req, resp);
+//    }
 }
