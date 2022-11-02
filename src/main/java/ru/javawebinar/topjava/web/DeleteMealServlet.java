@@ -2,22 +2,18 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.MealTo;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
-import static ru.javawebinar.topjava.util.MealsUtil.filteredByStreams;
 
-public class MealServlet extends HttpServlet {
-    private static final Logger log = getLogger(MealServlet.class);
+public class DeleteMealServlet extends HttpServlet {
+    private static final Logger log = getLogger(DeleteMealServlet.class);
     private List<Meal> meals;
 
     @Override
@@ -34,14 +30,25 @@ public class MealServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("redirect to meals");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.debug("delete get");
 
+        final String idString = req.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(idString);
+        }
+        catch (NumberFormatException e) {
+            throw new NumberFormatException();
+        }
 
-        List<MealTo> mealsTo = filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
-        request.setAttribute("meals", mealsTo);
-        log.debug(meals.toString());
+        for (Meal m: meals) {
+            if (m.getId() == id) {
+                meals.remove(m);
+                break;
+            }
+        }
 
-        getServletContext().getRequestDispatcher("/meals.jsp").forward(request, response);
+        resp.sendRedirect("/topjava/meals");
     }
 }

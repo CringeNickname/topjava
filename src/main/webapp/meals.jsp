@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="ru.javawebinar.topjava.model.Meal" %>
 <%@ page import="java.util.List" %>
 <%@ page import="ru.javawebinar.topjava.model.MealTo" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
@@ -12,7 +11,8 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<a href="editMeal.jsp">Add meals</a><br>
+<a href="editMeal">Add meals</a>
+<br><br>
 <%
     List<MealTo> meals = (List<MealTo>) request.getAttribute("meals");
 
@@ -25,16 +25,16 @@
         <th></th>
         <th></th>
     </tr>
-    <%for (MealTo meal: meals) {%>
+    <%for (MealTo mealTo: meals) {%>
     <%String color;
-      if (meal.isExcess()) color = "#ff0000";
+      if (mealTo.isExcess()) color = "#ff0000";
       else color = "#228b22";%>
         <tr style="color: <%= color%>">
-            <td><%= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(meal.getDateTime())%></td>
-            <td><%= meal.getDescription()%></td>
-            <td><%= meal.getCalories()%></td>
-            <td><a href="editMeal?id=<%=meals.indexOf(meal)%>">Update</a></td>
-            <td><a href="?id=<%= meals.indexOf(meal)%>">Delete</a></td>
+            <td><%= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(mealTo.getDateTime())%></td>
+            <td><%= mealTo.getDescription()%></td>
+            <td><%= mealTo.getCalories()%></td>
+            <td><a href="editMeal?id=<%=mealTo.getId()%>">Update</a></td>
+            <td><a href="deleteMeal?id=<%=mealTo.getId()%>">Delete</a></td>
         </tr>
     <% } %>
 </table>
