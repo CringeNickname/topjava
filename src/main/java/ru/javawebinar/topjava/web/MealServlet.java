@@ -8,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
@@ -15,8 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -63,6 +67,48 @@ public class MealServlet extends HttpServlet {
                         repository.get(getId(request), SecurityUtil.authUserId());
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                break;
+            case "filter":
+                String stringStartDate = request.getParameter("startDate");
+                LocalDate startDate;
+                if (stringStartDate.equals("")) {
+                    startDate = LocalDate.MIN;
+                }
+                else {
+                    startDate = LocalDate.parse(stringStartDate);
+                }
+
+                String stringEndDate = request.getParameter("endDate");
+                LocalDate endDate;
+                if (stringEndDate.equals("")) {
+                    endDate = LocalDate.MAX;
+                }
+                else {
+                    endDate = LocalDate.parse(stringEndDate);
+                }
+
+                String stringStartTime = request.getParameter("startTime");
+                LocalTime startTime;
+                if (stringStartTime.equals("")) {
+                    startTime = LocalTime.MIN;
+                }
+                else {
+                    startTime = LocalTime.parse(stringStartTime);
+                }
+
+                String stringEndTime = request.getParameter("endTime");
+                LocalTime endTime;
+                if (stringEndTime.equals("")) {
+                    endTime = LocalTime.MAX;
+                }
+                else {
+                    endTime = LocalTime.parse(stringEndTime);
+                }
+
+                List<MealTo> mealTos = MealsUtil.getFilteredTos(repository.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime, startDate, endDate);
+
+                request.setAttribute("meals", mealTos);
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:
