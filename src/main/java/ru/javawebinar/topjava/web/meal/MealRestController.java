@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -24,6 +26,13 @@ public class MealRestController {
 
         List<Meal> mealList = service.getAll(userId);
         return MealsUtil.getTos(mealList, MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    }
+
+    public List<MealTo> getFilteredTos(int caloriesPerDay, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, int userId) {
+        log.info("getFilteredTos");
+
+        List<Meal> mealList = service.getAll(userId);
+        return MealsUtil.getFilteredTos(mealList, caloriesPerDay, startTime, endTime, startDate, endDate);
     }
 
     public Meal get(int id, int userId) {
